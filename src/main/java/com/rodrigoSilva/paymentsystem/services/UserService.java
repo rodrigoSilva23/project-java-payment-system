@@ -2,6 +2,7 @@ package com.rodrigoSilva.paymentsystem.services;
 
 
 
+import com.rodrigoSilva.paymentsystem.DTO.UserResponse;
 import com.rodrigoSilva.paymentsystem.entities.User;
 import com.rodrigoSilva.paymentsystem.util.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User registerUser(User user) {
+    public UserResponse registerUser(User user) {
 
         if (userRepository.findByEmail(user.getEmail()) != null) {
             throw  new RuntimeException("This email already exists");
@@ -30,7 +31,14 @@ public class UserService {
         String randomCode = RandomString.generateRandomString(64);
         user.setVerificationCode(randomCode);
         user.setEnabled(false);
+
         User savedUser = userRepository.save(user);
-        return savedUser;
+
+        UserResponse userResponse = new UserResponse(
+                savedUser.getId(),
+                savedUser.getName(),
+                savedUser.getEmail()
+        );
+        return userResponse;
     }
 }

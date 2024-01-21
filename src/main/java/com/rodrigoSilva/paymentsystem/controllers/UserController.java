@@ -1,8 +1,10 @@
 package com.rodrigoSilva.paymentsystem.controllers;
 
 import com.rodrigoSilva.paymentsystem.DTO.UserRequest;
+import com.rodrigoSilva.paymentsystem.DTO.UserResponse;
 import com.rodrigoSilva.paymentsystem.entities.User;
 import com.rodrigoSilva.paymentsystem.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,9 +19,9 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> registerUser(@RequestBody UserRequest userRequest){
+    public ResponseEntity<UserResponse> registerUser(@RequestBody @Valid  UserRequest userRequest){
        User user = userRequest.toModel();
-        User savedUser = userService.registerUser(user);
+        UserResponse savedUser = userService.registerUser(user);
         return ResponseEntity.ok().body(savedUser);
     }
 }
