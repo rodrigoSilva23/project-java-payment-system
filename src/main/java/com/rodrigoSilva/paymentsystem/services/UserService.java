@@ -5,10 +5,13 @@ package com.rodrigoSilva.paymentsystem.services;
 import com.rodrigoSilva.paymentsystem.DTO.UserResponse;
 import com.rodrigoSilva.paymentsystem.entities.User;
 import com.rodrigoSilva.paymentsystem.util.RandomString;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.rodrigoSilva.paymentsystem.repositories.UserRepository;
+
+import java.io.UnsupportedEncodingException;
 
 @Service
 public class UserService {
@@ -19,7 +22,9 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public UserResponse registerUser(User user) {
+    @Autowired
+    private MailService mailService;
+    public UserResponse registerUser(User user) throws MessagingException, UnsupportedEncodingException {
 
         if (userRepository.findByEmail(user.getEmail()) != null) {
             throw  new RuntimeException("This email already exists");
@@ -33,6 +38,8 @@ public class UserService {
         user.setEnabled(false);
 
         User savedUser = userRepository.save(user);
+        mailService.sendVerificationEmail(savedUser);
+
 
         UserResponse userResponse = new UserResponse(
                 savedUser.getId(),
@@ -40,5 +47,15 @@ public class UserService {
                 savedUser.getEmail()
         );
         return userResponse;
+    }
+    public boolean verify(String verificationCode){
+        User user = userRepository.findByVerificationCode(verificationCode);
+        if(user == null || user.isEnabled()) {
+            return false;
+        }
+        user.setVerificationCode(null);
+        user.setEnabled(true);
+        userRepository.save(user);
+        return true;
     }
 }
