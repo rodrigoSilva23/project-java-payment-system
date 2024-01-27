@@ -29,7 +29,7 @@ Certifique-se de ter todas as dependências necessárias instaladas antes de pro
 ### Passo 1: Clonar o repositório
 
 ```bash
-  https://github.com/rodrigoSilva23/desafio-Laravel-API-Circuito-de-Surf.git
+  https://github.com/rodrigoSilva23/project-java-payment-system.git
 ```
 
 ### Passo 2: Instalar o Mysql usando um container
