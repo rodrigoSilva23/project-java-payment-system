@@ -1,4 +1,4 @@
-Select Language: **English**, [Portuguese](https://github.com/rodrigoSilva23/project-java-payment-system/edit/main/README-pt.md)
+Select Language: **English**, [Portuguese](https://github.com/rodrigoSilva23/project-java-payment-system/blob/main/README-pt.md)
 # Pix Payment API
 
 The Pix Payment API offers a simple and efficient solution for integrating Pix payments into your applications.
